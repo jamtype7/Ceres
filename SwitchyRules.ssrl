@@ -5,7 +5,7 @@
 #BEGIN
 
 [wildcard]
-"*://*.hulu.com/*
+*://*.hulu.com/*
 *://*.huluim.com/*
 *://*.netflix.com/*
 *://*.pandora.com/*
@@ -2528,7 +2528,7 @@
 *://*.zuo.la/*
 *://*.zuola.com/*
 *://*.zvereff.com/*
-*://*.zyzc9.com/*"
+*://*.zyzc9.com/*
 
 [regexp]
 
