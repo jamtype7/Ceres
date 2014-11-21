@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     17407,        469]
-NotebookOptionsPosition[     17119,        454]
-NotebookOutlinePosition[     17505,        471]
-CellTagsIndexPosition[     17462,        468]
+NotebookDataLength[     25186,        655]
+NotebookOptionsPosition[     24906,        641]
+NotebookOutlinePosition[     25284,        657]
+CellTagsIndexPosition[     25241,        654]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -21,8 +21,13 @@ Notebook[{
 Cell[BoxData[{
  RowBox[{
   RowBox[{"Unprotect", "[", 
-   RowBox[{"Part", ",", "Set", ",", "Piecewise", ",", "Delete"}], "]"}], 
-  ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+   "Part", ",", "Set", ",", "Piecewise", ",", "Delete", ",", "Orderless", ",",
+     "Print"}], "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Orderless", "[", "pattern_", "]"}], ":=", 
+  RowBox[{"Alternatives", "@@", 
+   RowBox[{"Permutations", "[", "pattern", "]"}]}]}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Delete", "[", 
    RowBox[{"s_String", ",", "p_"}], "]"}], ":=", 
@@ -40,6 +45,17 @@ Cell[BoxData[{
        RowBox[{"key_", "\[Rule]", "value_"}], ",", "___"}], "}"}], 
      "\[LeftDoubleBracket]", "key_", "\[RightDoubleBracket]"}], "]"}], ":=", 
    "value"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"KeyExist", "[", 
+    RowBox[{"map_List", ",", "key_String"}], "]"}], ":=", 
+   RowBox[{
+    RowBox[{"Length", "@", 
+     RowBox[{"Cases", "[", 
+      RowBox[{"map", ",", 
+       RowBox[{"HoldPattern", "[", 
+        RowBox[{"key", "\[Rule]", "_"}], "]"}]}], "]"}]}], ">", "0"}]}], 
+  ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"HoldPattern", "[", 
    RowBox[{"Set", "[", 
@@ -201,6 +217,10 @@ Cell[BoxData[{
         Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", 
    ")"}]}], "\[IndentingNewLine]", 
  RowBox[{
+  RowBox[{"FlattenLv1", "[", "list_", "]"}], ":=", 
+  RowBox[{"Flatten", "[", 
+   RowBox[{"list", ",", "1"}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
   RowBox[{"RemoveWhiteSpace", "[", "str_", "]"}], ":=", 
   RowBox[{"StringReplace", "[", 
    RowBox[{"str", ",", 
@@ -212,8 +232,56 @@ Cell[BoxData[{
   RowBox[{"StringReplace", "[", 
    RowBox[{"jsonStr", ",", 
     RowBox[{"{", 
-     RowBox[{"Whitespace", "\[Rule]", "\"\<\>\""}], "}"}]}], 
-   "]"}]}], "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Whitespace", "\[Rule]", "\"\<\>\""}], ",", 
+      RowBox[{
+       RowBox[{"n", ":", "NumberString"}], "\[RuleDelayed]", 
+       TagBox[GridBox[{
+          {"\[Piecewise]", GridBox[{
+             {
+              RowBox[{"StringTake", "[", 
+               RowBox[{"n", ",", "8"}], "]"}], 
+              RowBox[{
+               RowBox[{"StringLength", "[", "n", "]"}], ">", "8"}]},
+             {"n", "otherwise"}
+            },
+            AllowedDimensions->{2, Automatic},
+            Editable->True,
+            
+            GridBoxAlignment->{
+             "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, 
+              "Rows" -> {{Baseline}}, "RowsIndexed" -> {}},
+            
+            GridBoxItemSize->{
+             "Columns" -> {{Automatic}}, "ColumnsIndexed" -> {}, 
+              "Rows" -> {{1.}}, "RowsIndexed" -> {}},
+            GridBoxSpacings->{"Columns" -> {
+                Offset[0.27999999999999997`], {
+                 Offset[0.84]}, 
+                Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+                Offset[0.2], {
+                 Offset[0.4]}, 
+                Offset[0.2]}, "RowsIndexed" -> {}},
+            Selectable->True]}
+         },
+         GridBoxAlignment->{
+          "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, 
+           "Rows" -> {{Baseline}}, "RowsIndexed" -> {}},
+         GridBoxItemSize->{
+          "Columns" -> {{Automatic}}, "ColumnsIndexed" -> {}, 
+           "Rows" -> {{1.}}, "RowsIndexed" -> {}},
+         GridBoxSpacings->{"Columns" -> {
+             Offset[0.27999999999999997`], {
+              Offset[0.35]}, 
+             Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+             Offset[0.2], {
+              Offset[0.4]}, 
+             Offset[0.2]}, "RowsIndexed" -> {}}],
+        "Piecewise",
+        DeleteWithContents->True,
+        Editable->False,
+        SelectWithContents->True,
+        Selectable->False]}]}], "}"}]}], "]"}]}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Zero", ":=", 
    RowBox[{"0", "|", "0.0"}]}], ";"}], "\[IndentingNewLine]", 
@@ -272,16 +340,14 @@ Cell[BoxData[{
    RowBox[{"{", 
     RowBox[{
      RowBox[{"\"\<rotation\>\"", "\[Rule]", 
-      RowBox[{
-       FractionBox["\[Pi]", "2"], "*", 
-       RowBox[{"180", "/", "Pi"}]}]}], ",", 
+      FractionBox["\[Pi]", "2"]}], ",", 
      RowBox[{"\"\<translation\>\"", "\[Rule]", 
       RowBox[{"{", 
        RowBox[{"x", ",", "y"}], "}"}]}], ",", 
      RowBox[{"\"\<scale\>\"", "\[Rule]", 
       RowBox[{"{", 
-       RowBox[{"b", ",", 
-        RowBox[{"-", "c"}]}], "}"}]}]}], "}"}]}], 
+       RowBox[{
+        RowBox[{"-", "c"}], ",", "b"}], "}"}]}]}], "}"}]}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
@@ -307,12 +373,56 @@ Cell[BoxData[{
    RowBox[{"Module", "[", 
     RowBox[{
      RowBox[{"{", 
-      RowBox[{
-       RowBox[{"r", "=", 
-        RowBox[{"ArcCot", "[", 
-         FractionBox["a", "b"], "]"}]}], ",", "rotation", ",", "scale"}], 
-      "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"r", ",", "rotation", ",", "scale"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
      RowBox[{
+      RowBox[{"r", "=", 
+       TagBox[GridBox[{
+          {"\[Piecewise]", GridBox[{
+             {
+              FractionBox["\[Pi]", "2"], 
+              RowBox[{"b", "\[Equal]", "0"}]},
+             {
+              RowBox[{"ArcCot", "[", 
+               FractionBox["a", "b"], "]"}], "otherwise"}
+            },
+            AllowedDimensions->{2, Automatic},
+            Editable->True,
+            
+            GridBoxAlignment->{
+             "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, 
+              "Rows" -> {{Baseline}}, "RowsIndexed" -> {}},
+            
+            GridBoxItemSize->{
+             "Columns" -> {{Automatic}}, "ColumnsIndexed" -> {}, 
+              "Rows" -> {{1.}}, "RowsIndexed" -> {}},
+            GridBoxSpacings->{"Columns" -> {
+                Offset[0.27999999999999997`], {
+                 Offset[0.84]}, 
+                Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+                Offset[0.2], {
+                 Offset[0.4]}, 
+                Offset[0.2]}, "RowsIndexed" -> {}},
+            Selectable->True]}
+         },
+         GridBoxAlignment->{
+          "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, 
+           "Rows" -> {{Baseline}}, "RowsIndexed" -> {}},
+         GridBoxItemSize->{
+          "Columns" -> {{Automatic}}, "ColumnsIndexed" -> {}, 
+           "Rows" -> {{1.}}, "RowsIndexed" -> {}},
+         GridBoxSpacings->{"Columns" -> {
+             Offset[0.27999999999999997`], {
+              Offset[0.35]}, 
+             Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+             Offset[0.2], {
+              Offset[0.4]}, 
+             Offset[0.2]}, "RowsIndexed" -> {}}],
+        "Piecewise",
+        DeleteWithContents->True,
+        Editable->False,
+        SelectWithContents->True,
+        Selectable->False]}], ";", "\[IndentingNewLine]", 
       RowBox[{"rotation", "=", 
        TagBox[GridBox[{
           {"\[Piecewise]", GridBox[{
@@ -363,13 +473,58 @@ Cell[BoxData[{
         SelectWithContents->True,
         Selectable->False]}], ";", "\[IndentingNewLine]", 
       RowBox[{"scale", "=", 
-       RowBox[{"{", 
-        RowBox[{
-         FractionBox["a", 
-          RowBox[{"Cos", "[", "rotation", "]"}]], ",", 
-         FractionBox["d", 
-          RowBox[{"Cos", "[", "rotation", "]"}]]}], "}"}]}], ";", 
-      "\[IndentingNewLine]", 
+       TagBox[GridBox[{
+          {"\[Piecewise]", GridBox[{
+             {
+              RowBox[{"{", 
+               RowBox[{"a", ",", "d"}], "}"}], 
+              RowBox[{
+               RowBox[{"Cos", "[", "rotation", "]"}], "\[Equal]", "0"}]},
+             {
+              RowBox[{"{", 
+               RowBox[{
+                FractionBox["a", 
+                 RowBox[{"Cos", "[", "rotation", "]"}]], ",", 
+                FractionBox["d", 
+                 RowBox[{"Cos", "[", "rotation", "]"}]]}], "}"}], "otherwise"}
+            },
+            AllowedDimensions->{2, Automatic},
+            Editable->True,
+            
+            GridBoxAlignment->{
+             "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, 
+              "Rows" -> {{Baseline}}, "RowsIndexed" -> {}},
+            
+            GridBoxItemSize->{
+             "Columns" -> {{Automatic}}, "ColumnsIndexed" -> {}, 
+              "Rows" -> {{1.}}, "RowsIndexed" -> {}},
+            GridBoxSpacings->{"Columns" -> {
+                Offset[0.27999999999999997`], {
+                 Offset[0.84]}, 
+                Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+                Offset[0.2], {
+                 Offset[0.4]}, 
+                Offset[0.2]}, "RowsIndexed" -> {}},
+            Selectable->True]}
+         },
+         GridBoxAlignment->{
+          "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, 
+           "Rows" -> {{Baseline}}, "RowsIndexed" -> {}},
+         GridBoxItemSize->{
+          "Columns" -> {{Automatic}}, "ColumnsIndexed" -> {}, 
+           "Rows" -> {{1.}}, "RowsIndexed" -> {}},
+         GridBoxSpacings->{"Columns" -> {
+             Offset[0.27999999999999997`], {
+              Offset[0.35]}, 
+             Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+             Offset[0.2], {
+              Offset[0.4]}, 
+             Offset[0.2]}, "RowsIndexed" -> {}}],
+        "Piecewise",
+        DeleteWithContents->True,
+        Editable->False,
+        SelectWithContents->True,
+        Selectable->False]}], ";", "\[IndentingNewLine]", 
       RowBox[{"(*", 
        RowBox[{
         RowBox[{"Print", "[", 
@@ -417,7 +572,25 @@ Cell[BoxData[{
          RowBox[{"name", "\[Rule]", 
           RowBox[{"Import", "[", "png", "]"}]}]}]}], "]"}], 
       "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}]}]}], 
-  ";"}]}], "Input",
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Print", "[", 
+    RowBox[{"expr", ":", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"Except", "[", 
+           RowBox[{"\"\< \>\"", ",", "_String"}], "]"}], "|", 
+          RowBox[{"_", "?", "NumberQ"}]}], ")"}], ".."}], ")"}], ".."}]}], 
+    "]"}], ":=", 
+   RowBox[{"Print", "@@", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"{", "expr", "}"}], "~", "Riffle", "~", "\"\< \>\""}], 
+     ")"}]}]}], ";"}]}], "Input",
  CellChangeTimes->{{3.6031696994312553`*^9, 3.6031696998205338`*^9}, {
    3.603170373291151*^9, 3.603170390810897*^9}, {3.6031704938847322`*^9, 
    3.6031704963075333`*^9}, {3.603170634649664*^9, 3.6031706781435833`*^9}, {
@@ -450,13 +623,26 @@ Cell[BoxData[{
    3.6057644160953627`*^9}, {3.6057645249907484`*^9, 
    3.6057645259333763`*^9}, {3.6060424248798227`*^9, 3.606042463151903*^9}, {
    3.606044441292631*^9, 3.606044441544465*^9}, {3.606622022442461*^9, 
-   3.6066220227196755`*^9}}]
+   3.6066220227196755`*^9}, {3.606690923892064*^9, 3.606690941372675*^9}, {
+   3.6066914202537003`*^9, 3.6066914723693085`*^9}, {3.606691512750126*^9, 
+   3.6066915472530394`*^9}, {3.606691745254533*^9, 3.6066917681597443`*^9}, {
+   3.6066918170342016`*^9, 3.606691844411383*^9}, 3.6066921424062824`*^9, {
+   3.606693276542465*^9, 3.606693288499405*^9}, 3.606693694405969*^9, {
+   3.6067830658308277`*^9, 3.606783106405773*^9}, {3.6067831474940605`*^9, 
+   3.6067831918575215`*^9}, 3.60678345845557*^9, {3.606783641319101*^9, 
+   3.6067836431273007`*^9}, {3.608992741233466*^9, 3.6089927463617744`*^9}, {
+   3.610667108590847*^9, 3.6106671316772466`*^9}, {3.6106913631017137`*^9, 
+   3.610691371582737*^9}, {3.6106916892918487`*^9, 3.6106916894779997`*^9}, {
+   3.611585767611086*^9, 3.6115857908134317`*^9}, {3.611585885955696*^9, 
+   3.61158589078414*^9}, 3.6115863954382887`*^9, {3.6115866634180884`*^9, 
+   3.6115866754161806`*^9}, {3.611586708475606*^9, 3.6115867392924166`*^9}, {
+   3.6189113768292904`*^9, 3.6189113782843227`*^9}, {3.6189115836161947`*^9, 
+   3.6189116435295343`*^9}, {3.618911696605054*^9, 3.618911706097283*^9}}]
 },
-WindowSize->{1809, 962},
-WindowMargins->{{0, Automatic}, {Automatic, 0}},
-Magnification:>1.15 Inherited,
-FrontEndVersion->"10.0 for Microsoft Windows (64-bit) (2014\:5e743\:670818\
-\:65e5)",
+WindowSize->{895, 1033},
+WindowMargins->{{458, Automatic}, {Automatic, -24}},
+Magnification:>1.25 Inherited,
+FrontEndVersion->"9.0 for Microsoft Windows (64-bit) (January 25, 2013)",
 StyleDefinitions->"Default.nb"
 ]
 (* End of Notebook Content *)
@@ -470,7 +656,7 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[557, 20, 16558, 432, 1002, "Input"]
+Cell[557, 20, 24345, 619, 1525, "Input"]
 }
 ]
 *)
