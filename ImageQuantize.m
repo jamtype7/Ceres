@@ -4,8 +4,7 @@ BeginPackage["ImageQuantize`"]
 
 <<"https://raw.githubusercontent.com/jamtype7/Ceres/master/ConfigUtils.m";
 Needs["ConfigUtils`"];
-
-Begin["`Private`"]
+Needs["Global`"]
 
 pngQuant=RequireExternalTool["pngquant.exe"]; 
 ImageAutoQuantize[file_String, q_:75, dit_:True, 
@@ -16,8 +15,6 @@ ImageAutoQuantize[file_String, q_:75, dit_:True,
     Piecewise[{{file, override}, {file, True}}], "\"", ""]]
 QuantizeImageFolder[dir_, q_:75, dit_:True] := 
   (ImageAutoQuantize[#1, q, dit] & ) /@ FileNames["*.png", dir]
-
-End[]
 
 EndPackage[]
 
