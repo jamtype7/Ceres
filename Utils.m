@@ -63,4 +63,7 @@ ImportImages[dir_] := FileNames["*.png", dir] /.
     png_String :> StringCases[png, 
        __~~"\\"~~name__~~".png" :> name -> Import[png]][[
       1]]; 
+BrowseFile[title_String:None]:=SystemDialogInput["FileOpen",WindowTitle->title];
+BrowseDirectory[title_String:None]:=SystemDialogInput["Directory",WindowTitle->title];
+
 EndPackage[]
