@@ -67,6 +67,6 @@ BrowseFile[]:=BrowseFile[""];
 BrowseFile[title_String]:=SystemDialogInput["FileOpen",WindowTitle->title];
 BrowseDirectory[]:=BrowseDirectory[""];
 BrowseDirectory[title_String]:=SystemDialogInput["Directory",WindowTitle->title];
-FileName[path_String]:=StringSplit[FileNameTake[path],"."]//First;
+FileName[path_String]:=StringJoin@Riffle[Most[StringSplit[FileNameTake[path],"."]],"."];
 
 EndPackage[]
