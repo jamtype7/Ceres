@@ -28,7 +28,7 @@ Resize[frames_, images_, scale_] := Module[{localFrames, IndeiesOf, tolerance, t
           Resampling -> "Nearest"], ScalingTransform[((1/scale)*(s2/s1))/s][[1]]}; Print["step3"]; 
      resizedImages = images /. (resized /. {o_Image, n_Image, t_} :> o -> n); Print["step4"]; 
      resizedFrames = frames; resized /. {o_Image, n_Image, t_} :> Module[{fo = FramesOfImg[o], r}, 
-        r = MapThread[Rule, {fo, fo /. ("transform" -> ot_) :> "transform" -> ot . t}]; Print[r]; 
+        r = MapThread[Rule, {fo, fo /. ("transform" -> ot_) :> "transform" -> ot . t}]; 
          resizedFrames = resizedFrames /. r]; Print["step5"]; {"frames" -> resizedFrames, 
       "images" -> resizedImages}]; 
 AnimationData := Orderless[{"className" -> _String, "frameLabels" -> _List, "frames" -> {{FrameData..}..}, 
