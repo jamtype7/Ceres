@@ -38,16 +38,16 @@ JSONCompress[jsonStr_String] := StringReplace[jsonStr,
      Piecewise[{{StringTake[n, 8], StringLength[n] > 8}, 
        {n, otherwise}}]}]
 Zero := 0 | 0.; 
-ResolveAffineMatrix[MatrixForm[{{a_, Zero, x_}, 
-      {Zero, d_, y_}, {_, _, _}}]] := 
+ResolveAffineMatrix[{{a_, Zero, x_}, 
+      {Zero, d_, y_}, {_, _, _}}] := 
    {"rotation" -> 0, "translation" -> {x, y}, 
     "scale" -> {a, d}}; 
-ResolveAffineMatrix[MatrixForm[{{Zero, c_, x_}, 
-      {b_, Zero, y_}, {_, _, _}}]] := 
+ResolveAffineMatrix[{{Zero, c_, x_}, 
+      {b_, Zero, y_}, {_, _, _}}] := 
    {"rotation" -> Pi/2, "translation" -> {x, y}, 
     "scale" -> {-c, b}}; 
-ResolveAffineMatrix[MatrixForm[{{a_, c_, x_}, {b_, d_, y_}, 
-      {_, _, _}}]] := Module[{r, rotation, scale}, 
+ResolveAffineMatrix[{{a_, c_, x_}, {b_, d_, y_}, 
+      {_, _, _}}] := Module[{r, rotation, scale}, 
     r = Piecewise[{{Pi/2, b == 0}, {ArcCot[a/b], 
          otherwise}}]; rotation = Piecewise[
        {{r + Pi, a < 0}, {r + 2*Pi, b < 0}, 
