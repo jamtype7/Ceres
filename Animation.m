@@ -22,15 +22,16 @@ Resize[frames_, images_, scale_] := Module[{localFrames, IndeiesOf, tolerance, t
      d1 = (FindMaxScale /@ #1 & )[(Cases[frames, {___, "imageIndex" -> #1, ___, "transform" -> t_, ___} :> 
             Abs[ResolveAffineMatrix[t][["scale"]]], Infinity] & ) /@ IndeiesOf[images] /. 
         {} -> Sequence[]]; d2 = MapThread[List, {images, d1}]; 
-     d3 = Cases[d2, {_, {___, s_, ___}} /; s < threshold]; Print["threshold:", threshold]; Print[d3]; 
-     resized = d3 /. {idx_ -> i_Image, s_} :> {i, s, (Piecewise[{{1, #1 > 1}, {#1, True}}] & ) /@ 
-           (s*scale), s*scale} /. {i_Image, s_, s1_, s2_} :> {i, ImageResize[i, ImageDimensions[i]*s1, 
-          Resampling -> "Nearest"], ScalingTransform[((1/scale)*(s2/s1))/s][[1]]}; Print["step3"]; 
-     resizedImages = images /. (resized /. {o_Image, n_Image, t_} :> o -> n); Print["step4"]; 
-     resizedFrames = frames; resized /. {o_Image, n_Image, t_} :> Module[{fo = FramesOfImg[o], r}, 
+     d3 = Cases[d2, {_, {___, s_, ___}} /; s < threshold]; d3 = d3 /. Zero :> 1.*^-7; 
+     Print["threshold:", threshold]; resized = 
+      d3 /. {idx_ -> i_Image, s_} :> {i, s, (Piecewise[{{1, #1 > 1}, {#1, True}}] & ) /@ (s*scale), 
+          s*scale} /. {i_Image, s_, s1_, s2_} :> Module[{newSize}, newSize = ImageDimensions[i]*s1; 
+          newSize = newSize /. r_Real /; r < 1 :> 1; {i, ImageResize[i, newSize, Resampling -> "Nearest"], 
+           ScalingTransform[((1/scale)*(s2/s1))/s][[1]]}]; 
+     resizedImages = images /. (resized /. {o_Image, n_Image, t_} :> o -> n); resizedFrames = frames; 
+     resized /. {o_Image, n_Image, t_} :> Module[{fo = FramesOfImg[o], r}, 
         r = MapThread[Rule, {fo, fo /. ("transform" -> ot_) :> "transform" -> ot . t}]; 
-         resizedFrames = resizedFrames /. r]; Print["step5"]; {"frames" -> resizedFrames, 
-      "images" -> resizedImages}]; 
+         resizedFrames = resizedFrames /. r]; {"frames" -> resizedFrames, "images" -> resizedImages}]; 
 AnimationData := Orderless[{"className" -> _String, "frameLabels" -> _List, "frames" -> {{FrameData..}..}, 
      "scale" -> _?NumberQ}]; 
 NormalizeAnimationData[animData_] := animData /. ("frames" -> frames_List) :> 
