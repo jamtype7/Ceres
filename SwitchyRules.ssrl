@@ -2534,6 +2534,8 @@
 *://*.zyzc9.com/*
 *://*.uncyclopedia.wikia.com/*
 *://*.wikipedia.org/*
+*://*.github.com/*
+*://*.wolframcloud.com/*
 
 [regexp]
 
