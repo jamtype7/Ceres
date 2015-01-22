@@ -27,7 +27,9 @@ MakeCookies[str_String] :=
      ";"]; 
 Piecewise[{cond___, {else_, else | otherwise}}, 0] := 
   Piecewise[{cond}, else]
-JSON[data_] := ExportString[data, "JSON"]; 
+
+If[Needs["JSONTools`"] === $Failed, (ToJSON[data_] := ExportString[data, "JSON", CharacterEncoding -> "UTF8"])];
+
 ConvertAS3Matrix[{a_, b_, c_, d_, tx_, ty_}] := 
   {{a, c, tx}, {b, d, -ty}, {0, 0, 1}}
 FlattenLv1[list_] := Flatten[list, 1]
